@@ -1,4 +1,4 @@
-FROM alpine:3.7
+FROM alpine:3.8
 
 WORKDIR /tmp
 
@@ -29,6 +29,7 @@ RUN apk --no-cache add \
         php7-session \
         php7-simplexml \
         php7-soap \
+        php7-sockets \
         php7-tokenizer \
         php7-xdebug \
         php7-xml \
@@ -41,10 +42,10 @@ RUN apk --no-cache add \
     && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && php composer-setup.php --install-dir=/usr/bin --filename=composer \
     && php -r "unlink('composer-setup.php');" \
-    && composer require "phpunit/phpunit:~6.5.8" --prefer-source --no-interaction \
+    && composer require "phpunit/phpunit:~6.5.13" --prefer-source --no-interaction \
     && composer require "phpunit/php-invoker" --prefer-source --no-interaction \
     && ln -s /tmp/vendor/bin/phpunit /usr/local/bin/phpunit \
-
+    \
     && sed -i 's/\;z/z/g' /etc/php7/conf.d/xdebug.ini \
     && php -m | grep -i xdebug
 
